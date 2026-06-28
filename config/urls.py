@@ -13,6 +13,7 @@ urlpatterns = [
     path('', SpectacularSwaggerView.as_view(url_name='schema'), name='root'),
 
     path('api/v1/auth/', include('apps.users.urls')),
+    path('api/v1/chemicals/', include('apps.inventory.urls')),
 ]
 
 if settings.DEBUG:

@@ -16,12 +16,14 @@ from .serializers import (
 User = get_user_model()
 
 
+@extend_schema(tags=['Auth'])
 class RegisterView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
 
 
+@extend_schema(tags=['Auth'])
 class LoginView(APIView):
     permission_classes = [AllowAny]
 
@@ -42,6 +44,7 @@ class LoginView(APIView):
         })
 
 
+@extend_schema(tags=['Auth'])
 class MeView(generics.RetrieveUpdateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
@@ -61,6 +64,7 @@ class MeView(generics.RetrieveUpdateAPIView):
         return Response(serializer.data)
 
 
+@extend_schema(tags=['Auth'])
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
 

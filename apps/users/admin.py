@@ -38,5 +38,5 @@ class CustomUserAdmin(UserAdmin):
 class UserProfileAdmin(admin.ModelAdmin):
     list_display = ['user', 'role', 'lab_name', 'phone', 'is_active']
     list_filter = ['role', 'is_active']
-    search_fields = ['user_email', 'lab_name']
+    search_fields = ['user__email', 'lab_name']
     list_editable = ['role', 'is_active']
