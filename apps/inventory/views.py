@@ -28,7 +28,6 @@ class ChemicalListView(generics.ListAPIView):
     serializer_class = ChemicalListSerializer
 
     queryset = Chemical.objects.filter(is_active=True)
-    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['name_uz', 'name_iupac', 'cas_number', 'formula']
     ordering_fields = ['name_uz', 'expiry_date', 'quantity']
 
