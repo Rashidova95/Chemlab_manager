@@ -26,6 +26,7 @@ class RegisterView(generics.CreateAPIView):
 @extend_schema(tags=['Auth'])
 class LoginView(APIView):
     permission_classes = [AllowAny]
+    serializer_class = LoginSerializer
 
     @extend_schema(request=LoginSerializer)
     def post(self, request):
@@ -67,6 +68,7 @@ class MeView(generics.RetrieveUpdateAPIView):
 @extend_schema(tags=['Auth'])
 class ChangePasswordView(APIView):
     permission_classes = [IsAuthenticated]
+    serializer_class = ChangePasswordSerializer
 
     @extend_schema(request=ChangePasswordSerializer)
     def post(self, request):

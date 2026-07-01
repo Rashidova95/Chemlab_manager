@@ -1,6 +1,7 @@
 import csv
 
 from django.http import HttpResponse
+from django.utils.timezone import localtime
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -47,6 +48,7 @@ class SampleDetailView(generics.RetrieveAPIView):
 class SampleStatusUpdateView(APIView):
     """FR-04: Status yangilash."""
     permission_classes = [IsLaborant]
+    serializer_class = SampleStatusSerializer
 
     def patch(self, request, pk):
         sample = generics.get_object_or_404(Sample, pk=pk)
@@ -70,6 +72,7 @@ class SampleStatusUpdateView(APIView):
 class SampleCSVExportView(APIView):
     """FR-05: CSV eksport."""
     permission_classes = [IsAuthenticated]
+    serializer_class = SampleListSerializer
 
     def get(self, request):
         response = HttpResponse(content_type='text/csv')
@@ -86,7 +89,7 @@ class SampleCSVExportView(APIView):
                 s.get_status_display(),
                 s.quantity,
                 s.unit,
-                s.received_at.strftime('%Y-%m-%d %H:%M'),
+                localtime(s.received_at).strftime('%Y-%m-%d %H:%M'),
             ])
 
         return response

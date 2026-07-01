@@ -9,9 +9,9 @@ class ChemicalListSerializer(serializers.ModelSerializer):
     """
     ET /api/v1/chemicals/
     """
-    is_low_stock = serializers.ReadOnlyField()
-    is_expiring_soon = serializers.ReadOnlyField()
-    is_expired = serializers.ReadOnlyField()
+    is_low_stock = serializers.BooleanField(read_only=True)
+    is_expiring_soon = serializers.BooleanField(read_only=True)
+    is_expired = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Chemical
@@ -26,9 +26,10 @@ class ChemicalDetailSerializer(serializers.ModelSerializer):
     """
     GET /api/v1/chemicals/{id}/
     """
-    is_low_stock = serializers.ReadOnlyField()
-    is_expiring_soon = serializers.ReadOnlyField()
-    is_expired = serializers.ReadOnlyField()
+    is_low_stock = serializers.BooleanField(read_only=True)
+    is_expiring_soon = serializers.BooleanField(read_only=True)
+    is_expired = serializers.BooleanField(read_only=True)
+
 
     class Meta:
         model = Chemical
@@ -62,9 +63,10 @@ class ChemicalAlertSerializer(serializers.ModelSerializer):
     """
    GET /api/v1/chemicals/alerts/
     """
-    is_low_stock = serializers.ReadOnlyField()
-    is_expiring_soon = serializers.ReadOnlyField()
-    is_expired = serializers.ReadOnlyField()
+    is_low_stock = serializers.BooleanField(read_only=True)
+    is_expiring_soon = serializers.BooleanField(read_only=True)
+    is_expired = serializers.BooleanField(read_only=True)
+
 
     class Meta:
         model = Chemical

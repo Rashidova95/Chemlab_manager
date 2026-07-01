@@ -68,6 +68,7 @@ class ChemicalUpdateView(generics.UpdateAPIView):
 @extend_schema(tags=['Chemicals'])
 class ChemicalUpdateQuantityView(APIView):
     permission_classes = [IsChemist]
+    serializer_class = ChemicalQuantitySerializer
 
     def patch(self, request, pk):
         chemical = generics.get_object_or_404(Chemical, pk=pk)
@@ -99,6 +100,7 @@ class ChemicalAlertView(APIView):
     GET /api/v1/chemicals/alerts/
     """
     permission_classes = [IsAuthenticated]
+    serializer_class = ChemicalAlertSerializer
 
     def get(self, request):
         today = date.today()
@@ -118,6 +120,7 @@ class ChemicalAlertView(APIView):
 @extend_schema(tags=['Chemicals'])
 class ChemicalDeactivateView(APIView):
     permission_classes = [IsAdmin]
+    serializer_class = ChemicalDetailSerializer
 
     def patch(self, request, pk):
         chemical = generics.get_object_or_404(Chemical, pk=pk)

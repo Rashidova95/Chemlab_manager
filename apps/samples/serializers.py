@@ -1,10 +1,11 @@
 from rest_framework import serializers
-
+from drf_spectacular.utils import extend_schema_field
 from .models import Sample, SampleStatusLog
 
 
 class SampleStatusLogSerializer(serializers.ModelSerializer):
     changed_by = serializers.StringRelatedField()
+    changed_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
     class Meta:
         model = SampleStatusLog
@@ -13,6 +14,7 @@ class SampleStatusLogSerializer(serializers.ModelSerializer):
 
 class SampleListSerializer(serializers.ModelSerializer):
     received_by = serializers.SerializerMethodField()
+    received_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
     class Meta:
         model = Sample
@@ -22,6 +24,13 @@ class SampleListSerializer(serializers.ModelSerializer):
             'received_by', 'received_at',
         ]
 
+    @extend_schema_field({
+        'type': 'object',
+        'properties': {
+            'email': {'type': 'string'},
+            'name': {'type': 'string'},
+        }
+    })
     def get_received_by(self, obj):
         if obj.received_by:
             return {
@@ -33,6 +42,8 @@ class SampleListSerializer(serializers.ModelSerializer):
 
 class SampleDetailSerializer(serializers.ModelSerializer):
     received_by = serializers.SerializerMethodField()
+    received_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     logs = SampleStatusLogSerializer(many=True, read_only=True)
 
     class Meta:
@@ -44,6 +55,13 @@ class SampleDetailSerializer(serializers.ModelSerializer):
         ]
         read_only_fields = ['sample_id', 'received_at', 'updated_at']
 
+    @extend_schema_field({
+        'type': 'object',
+        'properties': {
+            'email': {'type': 'string'},
+            'name': {'type': 'string'},
+        }
+    })
     def get_received_by(self, obj):
         if obj.received_by:
             return {
