@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'apps.users',
     'apps.inventory',
     'apps.samples',
-
+    'apps.experiments',
+    'apps.reports',
 ]
 
 MIDDLEWARE = [
@@ -120,12 +121,10 @@ AUTH_PASSWORD_VALIDATORS = [
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
 LANGUAGE_CODE = 'uz'
-
+USE_TZ = True
 TIME_ZONE = 'Asia/Tashkent'
 
 USE_I18N = True
-
-USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
@@ -177,6 +176,13 @@ SPECTACULAR_SETTINGS = {
             }
         }
     },
+    'ENUM_NAME_OVERRIDES': {
+        'ChemicalUnitEnum': 'apps.inventory.models.Chemical.UNIT_CHOICES',
+        'SampleUnitEnum': 'apps.samples.models.Sample.UNIT_CHOICES',
+        'SampleStatusEnum': 'apps.samples.models.Sample.STATUS_CHOICES',
+        'ExperimentStatusEnum': 'apps.experiments.models.Experiment.STATUS_CHOICES',
+    },
+
 }
 
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[

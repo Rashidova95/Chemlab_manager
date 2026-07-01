@@ -15,6 +15,8 @@ urlpatterns = [
     path('api/v1/auth/', include('apps.users.urls')),
     path('api/v1/chemicals/', include('apps.inventory.urls')),
     path('api/v1/samples/', include('apps.samples.urls')),
+    path('api/v1/experiments/', include('apps.experiments.urls')),
+    path('api/v1/reports/', include('apps.reports.urls')),
 ]
 
 if settings.DEBUG:
