@@ -20,7 +20,7 @@ class Experiment(models.Model):
         'in_progress': ['review'],
         'review': ['approved', 'rejected'],
         'approved': [],
-        'rejected': ['in_progress'],  # qayta ishlash mumkin
+        'rejected': ['in_progress'],
     }
 
     sample = models.ForeignKey(

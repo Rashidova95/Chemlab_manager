@@ -20,7 +20,7 @@ from .serializers import (
 
 @extend_schema(tags=['Samples'])
 class SampleListView(generics.ListAPIView):
-    """FR-05: Namunalar ro'yxati."""
+    """ Namunalar ro'yxati."""
     permission_classes = [IsAuthenticated]
     serializer_class = SampleListSerializer
     queryset = Sample.objects.select_related('received_by').all()
@@ -31,7 +31,7 @@ class SampleListView(generics.ListAPIView):
 
 @extend_schema(tags=['Samples'])
 class SampleCreateView(generics.CreateAPIView):
-    """FR-03: Yangi namuna qabul qilish."""
+    """Yangi namuna qabul qilish."""
     permission_classes = [IsLaborant]
     serializer_class = SampleCreateSerializer
 
@@ -46,7 +46,7 @@ class SampleDetailView(generics.RetrieveAPIView):
 
 @extend_schema(tags=['Samples'])
 class SampleStatusUpdateView(APIView):
-    """FR-04: Status yangilash."""
+    """Status yangilash."""
     permission_classes = [IsLaborant]
     serializer_class = SampleStatusSerializer
 
@@ -70,7 +70,7 @@ class SampleStatusUpdateView(APIView):
 
 @extend_schema(tags=['Samples'])
 class SampleCSVExportView(APIView):
-    """FR-05: CSV eksport."""
+    """ CSV eksport."""
     permission_classes = [IsAuthenticated]
     serializer_class = SampleListSerializer
 

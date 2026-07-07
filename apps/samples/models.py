@@ -61,7 +61,7 @@ class Sample(models.Model):
 
 class SampleStatusLog(models.Model):
     """
-    FR-04: Har bir status o'zgarishida vaqt va foydalanuvchi qayd etiladi.
+    Har bir status o'zgarishida vaqt va foydalanuvchi qayd etiladi.
     """
     sample = models.ForeignKey(Sample, on_delete=models.CASCADE, related_name='logs')
     old_status = models.CharField(max_length=20)

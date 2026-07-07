@@ -4,6 +4,7 @@ from .models import Sample, SampleStatusLog
 
 
 class SampleStatusLogSerializer(serializers.ModelSerializer):
+    """ Status o'zgarish tarixi."""
     changed_by = serializers.StringRelatedField()
     changed_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
@@ -13,6 +14,7 @@ class SampleStatusLogSerializer(serializers.ModelSerializer):
 
 
 class SampleListSerializer(serializers.ModelSerializer):
+    """ Namunalar ro'yxati """
     received_by = serializers.SerializerMethodField()
     received_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
 
@@ -41,6 +43,7 @@ class SampleListSerializer(serializers.ModelSerializer):
 
 
 class SampleDetailSerializer(serializers.ModelSerializer):
+    """ Namuna detali — status tarixi bilan."""
     received_by = serializers.SerializerMethodField()
     received_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
     updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M")
@@ -72,6 +75,7 @@ class SampleDetailSerializer(serializers.ModelSerializer):
 
 
 class SampleCreateSerializer(serializers.ModelSerializer):
+    """ Yangi namuna yaratish — received_by tokendan."""
     class Meta:
         model = Sample
         fields = ['name', 'source_type', 'quantity', 'unit', 'notes']
@@ -82,6 +86,7 @@ class SampleCreateSerializer(serializers.ModelSerializer):
 
 
 class SampleStatusSerializer(serializers.ModelSerializer):
+    """ Status yangilash — can_move_to tekshiradi."""
     class Meta:
         model = Sample
         fields = ['status']

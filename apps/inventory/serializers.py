@@ -61,7 +61,7 @@ class ChemicalCreateSerializer(serializers.ModelSerializer):
 
 class ChemicalAlertSerializer(serializers.ModelSerializer):
     """
-   GET /api/v1/chemicals/alerts/
+    GET /api/v1/chemicals/alerts/
     """
     is_low_stock = serializers.BooleanField(read_only=True)
     is_expiring_soon = serializers.BooleanField(read_only=True)

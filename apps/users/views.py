@@ -18,6 +18,7 @@ User = get_user_model()
 
 @extend_schema(tags=['Auth'])
 class RegisterView(generics.CreateAPIView):
+    """ Yangi foydalanuvchi ro'yxatdan o'tishi. POST /api/v1/auth/register/ """
     queryset = User.objects.all()
     serializer_class = RegisterSerializer
     permission_classes = [AllowAny]
@@ -25,6 +26,7 @@ class RegisterView(generics.CreateAPIView):
 
 @extend_schema(tags=['Auth'])
 class LoginView(APIView):
+    """ Email + parol bilan kirish, JWT token olish. POST /api/v1/auth/login/"""
     permission_classes = [AllowAny]
     serializer_class = LoginSerializer
 
@@ -47,6 +49,7 @@ class LoginView(APIView):
 
 @extend_schema(tags=['Auth'])
 class MeView(generics.RetrieveUpdateAPIView):
+    """ O'z profilini ko'rish va tahrirlash. GET/PATCH /api/v1/auth/me/"""
     permission_classes = [IsAuthenticated]
     serializer_class = UserSerializer
     http_method_names = ['get', 'patch']
@@ -67,6 +70,7 @@ class MeView(generics.RetrieveUpdateAPIView):
 
 @extend_schema(tags=['Auth'])
 class ChangePasswordView(APIView):
+    """ Parol o'zgartirish. POST /api/v1/auth/change-password/"""
     permission_classes = [IsAuthenticated]
     serializer_class = ChangePasswordSerializer
 

@@ -2,7 +2,7 @@ from datetime import date, timedelta
 
 from django.db.models import F
 from drf_spectacular.utils import extend_schema
-from rest_framework import generics, filters
+from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -113,7 +113,7 @@ class ChemicalAlertView(APIView):
         return Response({
             'low_stock': ChemicalAlertSerializer(low_stock, many=True).data,
             'expiring_soon': ChemicalAlertSerializer(expiring_soon, many=True).data,
-            'expired': ChemicalAlertSerializer(expired, many=True).data,  # + yangi
+            'expired': ChemicalAlertSerializer(expired, many=True).data,
         })
 
 

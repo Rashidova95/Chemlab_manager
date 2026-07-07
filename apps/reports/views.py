@@ -22,7 +22,7 @@ from apps.samples.serializers import SampleDetailSerializer
 @extend_schema(tags=['Reports'])
 class SamplePDFReportView(generics.RetrieveAPIView):
     """
-    FR-10: Namuna bo'yicha PDF hisobot.
+    Namuna bo'yicha PDF hisobot.
     GET /api/v1/reports/samples/{id}/pdf/
     """
     permission_classes = [IsAuthenticated]

@@ -8,6 +8,7 @@ User = get_user_model()
 
 
 class RegisterSerializer(serializers.ModelSerializer):
+    """ Yangi foydalanuvchi yaratish."""
     password = serializers.CharField(write_only=True, validators=[validate_password])
     password2 = serializers.CharField(write_only=True)
 
@@ -26,6 +27,7 @@ class RegisterSerializer(serializers.ModelSerializer):
 
 
 class LoginSerializer(serializers.Serializer):
+    """ Email + parol validatsiyasi."""
     email = serializers.EmailField()
     password = serializers.CharField(write_only=True)
 
@@ -42,6 +44,7 @@ class LoginSerializer(serializers.Serializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    """ Rol va profil ma'lumotlari."""
     email = serializers.EmailField(source='user.email', read_only=True)
 
     class Meta:
@@ -51,6 +54,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """ Foydalanuvchi ma'lumotlari + profil."""
     profile = UserProfileSerializer()
 
     class Meta:
@@ -76,6 +80,7 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ChangePasswordSerializer(serializers.Serializer):
+    """ Parol o'zgartirish validatsiyasi."""
     old_password = serializers.CharField(write_only=True)
     new_password = serializers.CharField(write_only=True, min_length=8)
 

@@ -87,7 +87,7 @@ class ExperimentUpdateSerializer(serializers.ModelSerializer):
         # Approved tajribani tahrirlashni bloklash
         if self.instance and self.instance.status == 'approved':
             raise serializers.ValidationError(
-                "Approved tajribani tahrirlash mumkin emas."
+                "Tasdiqlangan tajribani tahrirlash mumkin emas."
             )
         return attrs
 
