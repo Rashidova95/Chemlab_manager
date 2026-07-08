@@ -12,7 +12,7 @@ from apps.inventory.models import Chemical
 from apps.samples.models import Sample
 
 
-@extend_schema(tags=['Dashboard'])
+@extend_schema(tags=['Dashboard'], responses={200: dict})
 class DashboardStatsView(APIView):
     permission_classes = [IsAuthenticated]
 
