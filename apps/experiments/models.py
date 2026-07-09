@@ -33,7 +33,7 @@ class Experiment(models.Model):
     method = models.CharField(max_length=255, verbose_name="Tahlil metodi")
     objective = models.TextField(verbose_name="Maqsad")
     observations = models.TextField(blank=True, verbose_name="Kuzatuvlar")
-    results = models.JSONField(default=dict, verbose_name="Natijalar")
+    results = models.JSONField(default=dict, blank=True, verbose_name="Natijalar")
 
     status = models.CharField(
         max_length=20,
