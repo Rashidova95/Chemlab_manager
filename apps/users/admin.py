@@ -9,6 +9,14 @@ class UserProfileInline(admin.StackedInline):
     can_delete = False
     fields = ('role', 'phone', 'lab_name', 'is_active')
 
+    def get_queryset(self, request):
+        qs = super().get_queryset(request)
+        return qs
+
+    def has_add_permission(self, request, obj=None):
+        if obj is not None:
+            return not UserProfile.objects.filter(user=obj).exists()
+        return True
 
 @admin.register(CustomUser)
 class CustomUserAdmin(UserAdmin):
