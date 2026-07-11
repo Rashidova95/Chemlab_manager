@@ -249,7 +249,7 @@ class SampleCSVTest(SampleBaseTest):
         self.as_laborant()
         r = self.client.get(reverse(CSV_URL))
         self.assertEqual(r.status_code, status.HTTP_200_OK)
-        self.assertIn(r['Content-Type'], 'text/csv')
+        self.assertIn('text/csv', r['Content-Type'] )
 
     def test_token_siz_401(self):
         r = self.client.get(reverse(CSV_URL))
