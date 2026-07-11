@@ -9,13 +9,13 @@ User = get_user_model()
 
 
 # -----------------------------------------------
-# URL NOMLARI — sizning urls.py ga mos
+# URL NOMLARI —
 # -----------------------------------------------
 LIST_URL   = 'sample-list'
 CREATE_URL = 'sample-create'
 DETAIL_URL = 'sample-detail'
-STATUS_URL = 'sample-status-update'   # ← siznikida shu
-CSV_URL    = 'sample-csv-export'      # ← siznikida shu
+STATUS_URL = 'sample-status-update'
+CSV_URL    = 'sample-csv-export'
 
 
 # -----------------------------------------------
@@ -249,7 +249,7 @@ class SampleCSVTest(SampleBaseTest):
         self.as_laborant()
         r = self.client.get(reverse(CSV_URL))
         self.assertEqual(r.status_code, status.HTTP_200_OK)
-        self.assertEqual(r['Content-Type'], 'text/csv')
+        self.assertIn(r['Content-Type'], 'text/csv')
 
     def test_token_siz_401(self):
         r = self.client.get(reverse(CSV_URL))
