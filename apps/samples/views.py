@@ -75,10 +75,10 @@ class SampleCSVExportView(APIView):
     serializer_class = SampleListSerializer
 
     def get(self, request):
-        response = HttpResponse(content_type='text/csv')
+        response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
         response['Content-Disposition'] = 'attachment; filename="samples.csv"'
 
-        writer = csv.writer(response)
+        writer = csv.writer(response, delimiter=';')
         writer.writerow(['ID', 'Nomi', 'Manba', 'Holat', 'Miqdor', 'Birlik', 'Sana'])
 
         for s in Sample.objects.select_related('received_by'):
