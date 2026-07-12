@@ -78,7 +78,8 @@ class SampleCSVExportView(APIView):
         response = HttpResponse(content_type='text/csv; charset=utf-8-sig')
         response['Content-Disposition'] = 'attachment; filename="samples.csv"'
 
-        writer = csv.writer(response, delimiter=';')
+        response.write('\ufeff'.encode('utf-8'))
+        writer = csv.writer(response, delimiter=',')
         writer.writerow(['ID', 'Nomi', 'Manba', 'Holat', 'Miqdor', 'Birlik', 'Sana'])
 
         for s in Sample.objects.select_related('received_by'):
