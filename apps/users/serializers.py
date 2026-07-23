@@ -89,3 +89,57 @@ class ChangePasswordSerializer(serializers.Serializer):
         if not user.check_password(value):
             raise serializers.ValidationError("Eski parol noto'g'ri.")
         return value
+
+class AdminUserListSerializer(serializers.ModelSerializer):
+    """ Admin uchun — foydalanuvchilar ro'yxati (rol boshqaruvi sahifasi)."""
+    role = serializers.CharField(source='profile.role')
+    lab_name = serializers.CharField(source='profile.lab_name')
+    phone = serializers.CharField(source='profile.phone')
+    is_active_profile = serializers.BooleanField(source='profile.is_active')
+
+    class Meta:
+        model = User
+        fields = [
+            'id', 'email', 'username', 'first_name', 'last_name',
+            'role', 'lab_name', 'phone', 'is_active_profile',
+            'is_active', 'date_joined',
+        ]
+        read_only_fields = fields
+
+
+class AdminUserRoleUpdateSerializer(serializers.Serializer):
+    """ Admin — boshqa foydalanuvchining rolini/holatini o'zgartiradi."""
+    role = serializers.ChoiceField(choices=UserProfile.ROLE_CHOICES, required=False)
+    is_active = serializers.BooleanField(required=False)
+
+    def validate(self, data):
+        if not data:
+            raise serializers.ValidationError("Kamida bitta maydon (role yoki is_active) yuborilishi kerak.")
+        return data
+
+
+class AdminUserCreateSerializer(serializers.ModelSerializer):
+    """ Admin uchun — yangi foydalanuvchi yaratish, rolni darhol belgilash."""
+    password = serializers.CharField(write_only=True, validators=[validate_password])
+    role = serializers.ChoiceField(choices=UserProfile.ROLE_CHOICES, write_only=True, required=False)
+    lab_name = serializers.CharField(write_only=True, required=False, allow_blank=True)
+    phone = serializers.CharField(write_only=True, required=False, allow_blank=True)
+
+    class Meta:
+        model = User
+        fields = ['email', 'username', 'first_name', 'last_name', 'password', 'role', 'lab_name', 'phone']
+
+    def create(self, validated_data):
+        role = validated_data.pop('role', 'viewer')
+        lab_name = validated_data.pop('lab_name', '')
+        phone = validated_data.pop('phone', '')
+
+        user = User.objects.create_user(**validated_data)
+        user.profile.role = role
+        user.profile.lab_name = lab_name
+        user.profile.phone = phone
+        user.profile.save()
+        return user
+
+    def to_representation(self, instance):
+        return AdminUserListSerializer(instance).data
