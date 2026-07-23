@@ -1,3 +1,4 @@
+from django.db import transaction
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
 from rest_framework.permissions import IsAuthenticated
@@ -74,8 +75,9 @@ class ExperimentApproveView(APIView):
     permission_classes = [IsChemist]
     serializer_class = ExperimentApproveSerializer
 
+    @transaction.atomic
     def patch(self, request, pk):
-        experiment = generics.get_object_or_404(Experiment, pk=pk)
+        experiment = generics.get_object_or_404(Experiment.objects.select_for_update(), pk=pk)
         serializer = ExperimentApproveSerializer(
             experiment,
             data={},
@@ -92,8 +94,9 @@ class ExperimentRejectView(APIView):
     permission_classes = [IsChemist]
     serializer_class = ExperimentRejectSerializer
 
+    @transaction.atomic
     def patch(self, request, pk):
-        experiment = generics.get_object_or_404(Experiment, pk=pk)
+        experiment = generics.get_object_or_404(Experiment.objects.select_for_update(), pk=pk)
         serializer = ExperimentRejectSerializer(
             experiment,
             data=request.data,

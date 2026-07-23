@@ -3,7 +3,7 @@ from django.urls import path
 from .views import (
     ChemicalListView, ChemicalCreateView,
     ChemicalDetailView, ChemicalUpdateView,
-    ChemicalUpdateQuantityView,
+    ChemicalUpdateQuantityView, ChemicalActivateView,
     ChemicalAlertView, ChemicalDeactivateView
 )
 
@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:pk>/update/', ChemicalUpdateView.as_view(), name='chemical-update'),
     path('<int:pk>/quantity/', ChemicalUpdateQuantityView.as_view(), name='chemical-quantity'),
     path('<int:pk>/deactivate/', ChemicalDeactivateView.as_view(), name='chemical-deactivate'),
+    path('<int:pk>/activate/', ChemicalActivateView.as_view(), name='chemical-activate'),
 ]

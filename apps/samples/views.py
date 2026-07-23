@@ -1,6 +1,8 @@
 import csv
 
+from django.db import transaction, connection
 from django.http import HttpResponse
+from django.utils import timezone
 from django.utils.timezone import localtime
 from drf_spectacular.utils import extend_schema
 from rest_framework import generics
@@ -34,6 +36,16 @@ class SampleCreateView(generics.CreateAPIView):
     """Yangi namuna qabul qilish."""
     permission_classes = [IsLaborant]
     serializer_class = SampleCreateSerializer
+
+    def perform_create(self, serializer):
+        # Bir vaqtda bir nechta laborant namuna qo'shsa ham bir xil sample_id
+        # (masalan ikkalasiga ham CHEM-2026-00006) berilib qolmasligi uchun,
+        # shu yil bo'yicha PostgreSQL advisory lock bilan navbatga solamiz.
+        # Lock tranzaksiya tugagach (COMMIT/ROLLBACK) avtomatik yechiladi.
+        with transaction.atomic():
+            with connection.cursor() as cursor:
+                cursor.execute("SELECT pg_advisory_xact_lock(%s)", [timezone.now().year])
+            serializer.save()
 
 
 @extend_schema(tags=['Samples'])
