@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
     gcc \
     && rm -rf /var/lib/apt/lists/*
 
-# Python paketlari
+# Python paketlari (avval faqat requirements.txt — Docker cache uchun)
 COPY requirements.txt .
 RUN pip install --upgrade pip && pip install -r requirements.txt
 
