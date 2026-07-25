@@ -41,7 +41,8 @@ INSTALLED_APPS = [
     'apps.samples',
     'apps.experiments',
     'apps.reports',
-    'apps.dashboard'
+    'apps.dashboard',
+    'apps.assistant',
 ]
 
 MIDDLEWARE = [
@@ -176,7 +177,8 @@ SPECTACULAR_SETTINGS = {
 CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
     'http://localhost:5173',
     'http://127.0.0.1:5173',
-    'http://56.228.28.107:8000',
+    'http://localhost',
+    'http://127.0.0.1',
 ])
 
 AUTH_USER_MODEL = 'users.CustomUser'
