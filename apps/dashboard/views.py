@@ -10,6 +10,7 @@ from rest_framework.views import APIView
 from apps.experiments.models import Experiment
 from apps.inventory.models import Chemical
 from apps.samples.models import Sample
+from apps.users.permissions import IsChemist
 
 
 @extend_schema(tags=['Dashboard'], responses={200: dict})
@@ -80,4 +81,63 @@ class DashboardStatsView(APIView):
                 'expiring': chemicals_expiring,
                 'expired': chemicals_expired,
             },
+        })
+
+
+@extend_schema(tags=['Dashboard'], responses={200: dict})
+class ExposureLedgerView(APIView):
+    """
+    Xodimning kimyoviy xavf ta'siri hisoboti — mavjud ma'lumotlar (kim,
+    qaysi tajribada, qanday xavf darajasidagi reaktivlar bilan ishlagani)
+    asosida, yangi ma'lumot kiritmasdan hisoblanadi.
+
+    GET /api/v1/dashboard/exposure/?days=90
+    Faqat admin/chemist ko'radi — bu xodimlar sog'ligini nazorat qilish
+    uchun boshqaruv ma'lumoti.
+    """
+    permission_classes = [IsAuthenticated, IsChemist]
+
+    # Qancha kundan buyon hisoblansin (standart — 90 kun)
+    DEFAULT_DAYS = 90
+    # Shu darajadan boshlab "yuqori xavf" deb hisoblanadi (Chemical.HAZARD_CHOICES: 3=Yuqori, 4=Juda yuqori)
+    HIGH_HAZARD_THRESHOLD = 3
+    # Shu oy ichida nechta yuqori xavfli ishdan keyin ogohlantirish chiqsin
+    ALERT_THRESHOLD = 20
+
+    def get(self, request):
+        days = int(request.query_params.get('days', self.DEFAULT_DAYS))
+        since = timezone.now() - timedelta(days=days)
+
+        experiments = (
+            Experiment.objects
+            .filter(created_at__gte=since, performed_by__isnull=False)
+            .select_related('performed_by')
+            .prefetch_related('chemicals_used')
+        )
+
+        # { user_id: {"name": ..., "total_exposures": 0, "high_hazard_exposures": 0} }
+        ledger = {}
+
+        for exp in experiments:
+            user = exp.performed_by
+            entry = ledger.setdefault(user.id, {
+                'user_id': user.id,
+                'name': f"{user.first_name} {user.last_name}".strip() or user.email,
+                'email': user.email,
+                'total_exposures': 0,
+                'high_hazard_exposures': 0,
+            })
+            for chem in exp.chemicals_used.all():
+                entry['total_exposures'] += 1
+                if chem.hazard_level >= self.HIGH_HAZARD_THRESHOLD:
+                    entry['high_hazard_exposures'] += 1
+
+        results = sorted(ledger.values(), key=lambda x: -x['high_hazard_exposures'])
+        for r in results:
+            r['over_threshold'] = r['high_hazard_exposures'] >= self.ALERT_THRESHOLD
+
+        return Response({
+            'period_days': days,
+            'threshold': self.ALERT_THRESHOLD,
+            'results': results,
         })
