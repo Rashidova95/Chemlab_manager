@@ -181,7 +181,7 @@ CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS', default=[
     'http://127.0.0.1',
 ])
 
-GEMINI_API_KEY = env('GEMINI_API_KEY')
+GEMINI_API_KEY = env('GEMINI_API_KEY', default='')
 GEMINI_MODEL = env('GEMINI_MODEL', default='gemini-3.6-flash')
 
 AUTH_USER_MODEL = 'users.CustomUser'
