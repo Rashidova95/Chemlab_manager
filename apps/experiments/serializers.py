@@ -19,7 +19,7 @@ class ExperimentListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Experiment
         fields = [
-            'id', 'title', 'sample', 'sample_id',
+            'id', 'title', 'sample', 'sample_id', 'method'
             'status', 'performed_by_name', 'created_at',
         ]
 

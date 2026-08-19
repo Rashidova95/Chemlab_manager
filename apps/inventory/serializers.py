@@ -16,8 +16,8 @@ class ChemicalListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Chemical
         fields = [
-            'id', 'name_uz', 'formula', 'cas_number',
-            'quantity', 'unit', 'hazard_level', 'expiry_date',
+            'id', 'name_uz', 'name_iupac', 'formula', 'cas_number',
+            'quantity', 'unit', 'hazard_level', 'expiry_date', 'supplier',
             'is_active', 'is_low_stock', 'is_expiring_soon', 'is_expired',
         ]
 
@@ -29,7 +29,6 @@ class ChemicalDetailSerializer(serializers.ModelSerializer):
     is_low_stock = serializers.BooleanField(read_only=True)
     is_expiring_soon = serializers.BooleanField(read_only=True)
     is_expired = serializers.BooleanField(read_only=True)
-
 
     class Meta:
         model = Chemical
@@ -66,7 +65,6 @@ class ChemicalAlertSerializer(serializers.ModelSerializer):
     is_low_stock = serializers.BooleanField(read_only=True)
     is_expiring_soon = serializers.BooleanField(read_only=True)
     is_expired = serializers.BooleanField(read_only=True)
-
 
     class Meta:
         model = Chemical
