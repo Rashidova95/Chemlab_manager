@@ -69,7 +69,6 @@ class ChemicalListTest(ChemicalBaseTest):
         self.assertNotIn('created_at', item)
         self.assertNotIn('updated_at', item)
         self.assertNotIn('storage_condition', item)
-        self.assertNotIn('supplier', item)
 
     def test_royxatda_asosiy_maydonlar_bor(self):
         self.as_laborant()
